@@ -132,6 +132,7 @@ with open(ofile, 'w') as output:
 			print rules
 			output.write(rules)
 			print "\trules sel'd are:", rsamples[rdb.keys().index(file)], "\n"
+			del states
 
 
 if __name__ == "__main__":
