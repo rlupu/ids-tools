@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #This release does not work on flowbits over default group.
 #Authors: Sabin G., Radu L.
-#Release: 0.5 / June 2017 
+#Release: 0.6 / June 2017 
 
 import sys, getopt, os
 import re
@@ -98,6 +98,7 @@ with open(ofile, 'w') as output:
 		with open(file) as input:
 			cnt = 0
 			states = set()
+			added = 0
 			rules = ""
 
 			for line in input:
@@ -113,9 +114,9 @@ with open(ofile, 'w') as output:
 						rsamples[rdb.keys().index(file)].append(cnt)
 						if getrulestates(line):
 							states = states.union(getrulestates(line))
-							print "multiple-lines rule found(states=", states, ").Searching for correlated rules ..." 
-							input.seek(0, 0)
-							cnt = 0
+							states.discard('')
+							print "multiple-lines rule found(states=", states, ").Looking for correlated rules ..." 
+							added = 1
 							continue	
 						break
 
@@ -125,14 +126,22 @@ with open(ofile, 'w') as output:
 							total = total + 1
 							rsamples[rdb.keys().index(file)].append(cnt)
 							states = states.union(getrulestates(line))
+							states.discard('')
 							print "\t+correlated rule added(states=", states,")."
-							input.seek(0, 0)
-							cnt = 0
+							added = 1
 
+				if added:
+					input.seek(0, 0)
+					cnt = 0
+					added = 0
+					
 			print rules
 			output.write(rules)
-			print "\trules sel'd are:", rsamples[rdb.keys().index(file)], "\n"
+			print "\trules sel'd from this file:", rsamples[rdb.keys().index(file)]
+			print "\t#rules sel'd:", total, "\n"
 			del states
+
+	print "sample size:", total
 
 
 if __name__ == "__main__":
