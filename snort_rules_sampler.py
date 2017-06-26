@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #This release does not work on flowbits over default group.
 #Authors: Sabin G., Radu L.
-#Release: 0.6 / June 2017 
+#Release: 0.7 / June 2017 
 
 import sys, getopt, os
 import re
