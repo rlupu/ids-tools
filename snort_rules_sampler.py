@@ -92,53 +92,58 @@ with open(ofile, 'w') as output:
 		index = random.choice(list(set(range(1,rdb[file]+1)) -set(rsamples[rdb.keys().index(file)])) )
 		#rsamples[rdb.keys().index(file)].append(index)
 
-		print "\tfrom file:", file, "; selected:", index
+		print "\tfrom file:", file, "; selected:", index, "out of", rdb[file],"rules"
 
 		#goto selected rule
 		with open(file) as input:
 			cnt = 0
 			states = set()
-			added = 0
+			mlr = 0 
 			rules = ""
 
-			for line in input:
-				if not re.match('\s*[#]+.*\r?\n', line) and not re.match('\s*\r?\n', line):
-					cnt = cnt + 1
-				else:
-					continue
+			while True:
+				for line in input:
+					if not re.match('\s*[#]+.*\r?\n', line) and not re.match('\s*\r?\n', line):
+						cnt = cnt + 1
+						if cnt > index and not mlr:
+							break
+					else:
+						continue
 
-				if cnt not in rsamples[rdb.keys().index(file)]:
-					if cnt == index:
-						rules = rules + line
-						total = total + 1
-						rsamples[rdb.keys().index(file)].append(cnt)
-						if getrulestates(line):
-							states = states.union(getrulestates(line))
-							states.discard('')
-							print "multiple-lines rule found(states=", states, ").Looking for correlated rules ..." 
-							added = 1
-							continue	
-						break
-
-					if getrulestates(line):
-						if getrulestates(line).intersection(states):
+					if cnt not in rsamples[rdb.keys().index(file)]:
+						if cnt == index:
 							rules = rules + line
 							total = total + 1
 							rsamples[rdb.keys().index(file)].append(cnt)
-							states = states.union(getrulestates(line))
-							states.discard('')
-							print "\t+correlated rule added(states=", states,")."
-							added = 1
+							if getrulestates(line):
+								states = states.union(getrulestates(line))
+								states.discard('')
+								print "multiple-lines rule found(states=", states, ").Looking for correlated rules ..." 
+								mlr = 1
+								continue	
+							mlr = 0
+							break
+						if getrulestates(line):
+							if getrulestates(line).intersection(states):
+								rules = rules + line
+								total = total + 1
+								rsamples[rdb.keys().index(file)].append(cnt)
+								states = states.union(getrulestates(line))
+								states.discard('')
+								mlr = 1
+								print "\t+correlated rule added(states=", states," progress=", 100*float(cnt)/rdb[file], "%)."
 
-				if added:
+				if mlr:
 					input.seek(0, 0)
 					cnt = 0
-					added = 0
+					mlr = 0
+				else:
+					break
 					
 			print rules
 			output.write(rules)
 			print "\trules sel'd from this file:", rsamples[rdb.keys().index(file)]
-			print "\t#rules sel'd:", total, "\n"
+			print "\ttotal rules sel'd:", total, "\n"
 			del states
 
 	print "sample size:", total
