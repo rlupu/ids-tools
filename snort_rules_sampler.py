@@ -1,12 +1,14 @@
 #!/usr/bin/python
 #This release does not work on flowbits over default group.
 #Authors: Sabin G., Radu L.
-#Release: 0.7 / June 2017 
+#Release: 0.75 / June 2017 
 
 import sys, getopt, os
 import re
 import random
 from datetime import date
+sys.path.append("../")
+from utils import *
 
 rpath = "/etc/snort/rules/"
 ofile = "sample.rules"
@@ -92,7 +94,9 @@ with open(ofile, 'w') as output:
 		index = random.choice(list(set(range(1,rdb[file]+1)) -set(rsamples[rdb.keys().index(file)])) )
 		#rsamples[rdb.keys().index(file)].append(index)
 
-		print "\tfrom file:", file, "; selected:", index, "out of", rdb[file],"rules"
+		sys.stdout.write(GREEN)
+		print "\tfrom file", file, ": selected the rule no. ", index, "out of", rdb[file],"rules"
+		sys.stdout.write(RESET)
 
 		#goto selected rule
 		with open(file) as input:
@@ -105,8 +109,6 @@ with open(ofile, 'w') as output:
 				for line in input:
 					if not re.match('\s*[#]+.*\r?\n', line) and not re.match('\s*\r?\n', line):
 						cnt = cnt + 1
-						if cnt > index and not mlr:
-							break
 					else:
 						continue
 
@@ -131,12 +133,15 @@ with open(ofile, 'w') as output:
 								states = states.union(getrulestates(line))
 								states.discard('')
 								mlr = 1
-								print "\t+correlated rule added(states=", states," progress=", 100*float(cnt)/rdb[file], "%)."
+								print "\t+correlated rule added(states=", states, " progress=%.1f" % round(100*float(cnt)/rdb[file], 2), "%)."
 
 				if mlr:
 					input.seek(0, 0)
 					cnt = 0
 					mlr = 0
+					sys.stdout.write(YELLOW)
+					print "rewind and check out for more rules w/ related flowbits."
+					sys.stdout.write(RESET)
 				else:
 					break
 					
