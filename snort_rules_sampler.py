@@ -7,8 +7,11 @@ import sys, getopt, os
 import re
 import random
 from datetime import date
-sys.path.append("../")
-from utils import *
+#sys.path.append("../")
+#from utils import *
+GREEN			= "\033[0;32m"
+YELLOW		= "\033[0;93m"
+RESET			= "\033[0;0m"
 
 rpath = "/etc/snort/rules/"
 ofile = "sample.rules"
