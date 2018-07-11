@@ -1,6 +1,7 @@
-#Botnet Synthetisizer 
-This application generates botnet traffic attack for cooperative (smart) vertical scanning a 
-target machine. Its only purpose is to support research and validation on related attacks 
+#Botnet Synthetisizer
+
+This application generates botnet traffic attack for cooperative (smart) vertical scanning of 
+a target machine. Its only purpose is to support research and validation on related attacks 
 detection mechanisms. 
 
 Specifically, it was tested on Snort detection rule-based engine and portscan preprocessor.
