@@ -17,14 +17,3 @@ real-world attacks is very limited since does not fully implement the necessary 
 Beware, any malicious use of this application is beyond the objectives and falls outside our 
 liabilities. 
 This is an alpha release.
-
-
-#Snort rules sampler
-
-snort_rules_sampler.py application randomly select (upon an uniform distribution) uncommented rules from the snort rules database 
-(default /etc/snort/rules/). The size of the rules sample must be specified as argument (see the help info). Since some snort 
-rules are multi-line defined, the sample size yielded could be slightly different.
-
-Latest tests achieved on databases with over 30,000 rules. 
-
-
