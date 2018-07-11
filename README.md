@@ -1,4 +1,4 @@
-# Botnet Synthetisizer
+# Botnet Synthesizer
 
 This application generates botnet traffic attack for cooperative (smart) vertical scanning of 
 a target machine. Its only purpose is to support research, validation on related attacks 
