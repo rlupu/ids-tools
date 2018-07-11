@@ -1,4 +1,4 @@
-#Botnet Synthetisizer
+# Botnet Synthetisizer
 
 This application generates botnet traffic attack for cooperative (smart) vertical scanning of 
 a target machine. Its only purpose is to support research, validation on related attacks 
@@ -19,7 +19,7 @@ liabilities.
 This is an alpha release.
 
 
-#Snort rules sampler
+# Snort rules sampler
 
 snort_rules_sampler.py application randomly select (upon an uniform distribution) uncommented rules from the snort rules database 
 (default /etc/snort/rules/). The size of the rules sample must be specified as argument (see the help info). Since some snort 
